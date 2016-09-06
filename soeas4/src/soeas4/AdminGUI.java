@@ -26,11 +26,9 @@ public class AdminGUI implements ActionListener {
         admin = new JFrame("ADMIN : "+title);
     }
     void create(GridBagConstraints gbc) {
-        gbc.gridy=0;
-        gbc.gridx=0;
         gbc.gridy=0;  gbc.gridx=0;
-        JLabel l = new JLabel("Select Professor");
-        l.setBackground(Color.white);
+        JLabel l = new JLabel("Select");
+        l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         pane.add(l,gbc);
@@ -55,7 +53,7 @@ public class AdminGUI implements ActionListener {
     }
     void populateGUI() {
         pane.setLayout(new GridBagLayout());
-        pane.setBackground(Color.orange);
+        pane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
         gbc.fill = GridBagConstraints.HORIZONTAL;
         create(gbc);
@@ -66,7 +64,6 @@ public class AdminGUI implements ActionListener {
         populateGUI();
         admin.add(pane);
         admin.setBounds(400,100,600,300);
-        admin.pack();
         admin.setVisible(true);
     }
 

@@ -1,0 +1,33 @@
+#include<stdio.h>
+
+void doNothing(int a,int b,int c)
+{
+	printf("did nothing\n");
+}
+
+float area(int rad)
+{
+	return 22.0/7*rad*rad;
+}
+
+int main()
+{
+	int a,b;
+	float c,d,e;
+	int f=4,g=20;
+	float i,j,k,l;
+	char m;
+	char n='A',o='B';
+	for(a=0;a<10;a++)
+	{
+		b=0;
+		while(b<a*a)
+		{
+			if(b++%2==0)
+				printf("%d\n",b);
+		}
+		if(a>6)
+			break;
+	}
+	return 0;
+}

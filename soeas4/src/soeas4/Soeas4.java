@@ -11,7 +11,7 @@ class Soeas4{
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; 
     static final String DB_URL = "jdbc:mysql://localhost/";
     static final String USER = "root";
-    static final String PASS = "KUmudini!@34";
+    static final String PASS = "placements2017";
     public static void main(String args[]) {
         javax.swing.SwingUtilities.invokeLater(() -> {
             conn = null;

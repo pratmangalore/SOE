@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-public class StudentGUI {
+public class StudentGUI implements ActionListener{
     public Statement stmt;
     public String title;
     public JFrame student;
@@ -27,11 +29,12 @@ public class StudentGUI {
     void subjects(GridBagConstraints gbc) {
         sql = "Select * from Course NATURAL JOIN Studata where user = '"+user+"';";
         count=0;
-        gbc.gridy=0;
+        gbc.gridy=1;
         gbc.gridx=0;
-        JLabel ss = new JLabel("Subject");
+        JLabel ss = new JLabel(" Course Name  ");
         ss.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        ss.setBackground(Color.white);
+        ss.setPreferredSize(new Dimension(70, 30));
+        ss.setBackground(new Color(211,211,211));
         ss.setOpaque(true);
         ss.setForeground(Color.BLACK);
         pane.add(ss,gbc);
@@ -42,8 +45,8 @@ public class StudentGUI {
                 gbc.gridx=count;
                 JLabel subject = new JLabel(rs.getString("course"),SwingConstants.CENTER);
                 subject.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                subject.setMinimumSize(new Dimension(70, 30));
-                subject.setBackground(Color.white);
+                subject.setPreferredSize(new Dimension(70, 30));
+                subject.setBackground(new Color(211,211,211));
                 subject.setOpaque(true);
                 subject.setForeground(Color.BLACK);
                 pane.add(subject,gbc);
@@ -56,11 +59,12 @@ public class StudentGUI {
     void attendance(GridBagConstraints gbc) {
         sql = "Select * from Course NATURAL JOIN Studata where user = '"+user+"';";
         count=0;
-        gbc.gridy=1;
+        gbc.gridy=2;
         gbc.gridx=0;
-        JLabel ats = new JLabel("Atndce");
+        JLabel ats = new JLabel("  Attendance  ");
+        ats.setPreferredSize(new Dimension(70, 30));
         ats.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        ats.setBackground(Color.white);
+        ats.setBackground(new Color(211,211,211));
         ats.setOpaque(true);
         ats.setForeground(Color.BLACK);
         pane.add(ats,gbc);
@@ -71,8 +75,8 @@ public class StudentGUI {
                 gbc.gridx=count;
                 JLabel att = new JLabel(Integer.toString(rs.getInt("attendance")),SwingConstants.CENTER);
                 att.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                att.setMinimumSize(new Dimension(70, 30));
-                att.setBackground(Color.white);
+                att.setPreferredSize(new Dimension(70, 30));
+                att.setBackground(new Color(211,211,211));
                 att.setOpaque(true);
                 att.setForeground(Color.BLACK);
                 pane.add(att,gbc);
@@ -85,11 +89,12 @@ public class StudentGUI {
     void marks(GridBagConstraints gbc) {
         sql = "Select * from Course NATURAL JOIN Studata where user = '"+user+"';";
         count=0;
-        gbc.gridy=2;
+        gbc.gridy=3;
         gbc.gridx=0;
-        JLabel mrs = new JLabel("Marks");
+        JLabel mrs = new JLabel("Marks Obtained");
+        mrs.setPreferredSize(new Dimension(100, 30));
         mrs.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        mrs.setBackground(Color.white);
+        mrs.setBackground(new Color(211,211,211));
         mrs.setOpaque(true);
         mrs.setForeground(Color.BLACK);
         pane.add(mrs,gbc);
@@ -100,8 +105,8 @@ public class StudentGUI {
                 gbc.gridx=count;
                 JLabel marks = new JLabel(Integer.toString(rs.getInt("marks")),SwingConstants.CENTER);
                 marks.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                marks.setMinimumSize(new Dimension(70, 30));
-                marks.setBackground(Color.white);
+                marks.setPreferredSize(new Dimension(70, 30));
+                marks.setBackground(new Color(211,211,211));
                 marks.setOpaque(true);
                 marks.setForeground(Color.BLACK);
                 pane.add(marks,gbc);
@@ -118,17 +123,26 @@ public class StudentGUI {
     }
     void populateGUI() {
         pane.setLayout(new GridBagLayout());
-        pane.setBackground(Color.orange);
+        pane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy=0;
+        gbc.gridy=4;
         create(gbc);
     }
     void createAndShowGUI() {
         student.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pane = new JPanel();
-        populateGUI();
+        populateGUI();       
         student.add(pane);
         student.setBounds(400,100,400,150);
         student.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        student.setVisible(false);
+        MainGui login = new MainGui("Institute Log In",stmt);
+        login.createAndShowGUI();
     }
 }

@@ -29,6 +29,8 @@ public class ProfessorGUI implements ActionListener{
     public JTextField[] att = new JTextField[10];
     public JTextField[] mrk = new JTextField[10];
     public JButton[] b = new JButton[10];
+    public String[] courses = new String[10];
+    public String[] classes = new String[10];
     ProfessorGUI(String title,Statement stmt,String user) {
         this.title=title;
         this.stmt=stmt;
@@ -43,7 +45,7 @@ public class ProfessorGUI implements ActionListener{
         try {
             gbc.gridy=0;  gbc.gridx=0;
             JLabel l = new JLabel("Select Course");
-            l.setBackground(Color.white);
+            l.setBackground(new Color(211,211,211));
             l.setOpaque(true);
             l.setForeground(Color.BLACK);
             pane.add(l,gbc);
@@ -67,12 +69,12 @@ public class ProfessorGUI implements ActionListener{
     void classes(GridBagConstraints gbc) {
         gbc.gridy=2;    gbc.gridx=0;
         JPanel gap = new JPanel();
-        gap.setBackground(Color.orange);
+        gap.setBackground(new Color(135,206,250));
         gap.setSize(400, 150);
         pane.add(gap,gbc);
         gbc.gridy=3;    gbc.gridx=0;
         JLabel l = new JLabel("Select Class");
-        l.setBackground(Color.white);
+        l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         pane.add(l,gbc);
@@ -97,21 +99,21 @@ public class ProfessorGUI implements ActionListener{
         gbc.gridy=0;
         gbc.gridx=0;
         JLabel l = new JLabel("StudentID ");
-        l.setBackground(Color.white);
+        l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         datapane.add(l,gbc);
         gbc.gridx=1;
         l = new JLabel("Attendance");
-        l.setBackground(Color.white);
+        l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         datapane.add(l,gbc);
         gbc.gridx=2;
         l = new JLabel("  Marks   ");
-        l.setBackground(Color.white);
+        l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -129,7 +131,7 @@ public class ProfessorGUI implements ActionListener{
                 gbc.gridx=0;
                 u[y-1] = new JLabel(rs.getString("user"));
                 u[y-1].setMinimumSize(new Dimension(50,20));
-                u[y-1].setBackground(Color.white);
+                u[y-1].setBackground(new Color(211,211,211));
                 u[y-1].setOpaque(true);
                 u[y-1].setForeground(Color.BLACK);
                 u[y-1].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -148,6 +150,8 @@ public class ProfessorGUI implements ActionListener{
                 b[y-1].addActionListener(this);
                 b[y-1].setMinimumSize(new Dimension(50,20));
                 datapane.add(b[y-1],gbc);
+                courses[y-1]=rs.getString("course");
+                classes[y-1]=rs.getString("class");
                 y++;
             }
         } catch (SQLException ex) {
@@ -157,14 +161,14 @@ public class ProfessorGUI implements ActionListener{
     }
     void populateGUI() {
         pane.setLayout(new GridBagLayout());
-        pane.setBackground(Color.orange);
+        pane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
         gbc.fill = GridBagConstraints.HORIZONTAL;
         create(gbc);
     }
     void populateGUI2() {
         datapane.setLayout(new GridBagLayout());
-        datapane.setBackground(Color.orange);
+        datapane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
         gbc.fill = GridBagConstraints.HORIZONTAL;
         create2(gbc);
@@ -182,7 +186,7 @@ public class ProfessorGUI implements ActionListener{
         datapane = new JPanel();
         populateGUI2();
         alldata.add(datapane);
-        alldata.setBounds(400,20,350,250);
+        alldata.setBounds(400,100,400,250);
         alldata.setVisible(true);
     }
     
@@ -212,7 +216,9 @@ public class ProfessorGUI implements ActionListener{
                 }
                 return;
             default:
-                sql = "Update Studata set attendance = "+att[Integer.parseInt(e.getActionCommand())].getText()+", marks = "+mrk[Integer.parseInt(e.getActionCommand())].getText()+" where user = '"+u[Integer.parseInt(e.getActionCommand())].getText()+"';";
+                if(Integer.parseInt(att[Integer.parseInt(e.getActionCommand())].getText())<=1)
+                    mrk[Integer.parseInt(e.getActionCommand())].setText("0");
+                sql = "Update Studata set attendance = "+att[Integer.parseInt(e.getActionCommand())].getText()+", marks = "+mrk[Integer.parseInt(e.getActionCommand())].getText()+" where user = '"+u[Integer.parseInt(e.getActionCommand())].getText()+"' and course = '"+courses[Integer.parseInt(e.getActionCommand())]+"' and class = '"+classes[Integer.parseInt(e.getActionCommand())]+"';";
                 try {
                     stmt.executeUpdate(sql);
                     JOptionPane.showMessageDialog(alldata, "Updated Successfully");

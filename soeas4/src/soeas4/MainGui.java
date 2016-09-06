@@ -102,7 +102,7 @@ public class MainGui implements ActionListener{
     }
     void populateGUI() {
         pane.setLayout(new GridBagLayout());
-        pane.setBackground(Color.orange);
+        pane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
         gbc.fill = GridBagConstraints.HORIZONTAL;
         create(gbc);
