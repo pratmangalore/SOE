@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -25,23 +26,24 @@ public class AdminGUI implements ActionListener {
     public JPanel datapane;
     public String sql;
     public String clas;
+    public String course;
     public JRadioButton rb;
     public JTextField utext;
     public JCheckBox cb;
     public JPasswordField ptext;
     public JCheckBox c;
     public List<JCheckBox> cbg = new ArrayList<JCheckBox>();
-    public int count;
+    public int count,sboth;
     AdminGUI(String title,Statement stmt,String user) {
         this.title=title;
         this.stmt=stmt;
         count=0;
+        sboth=0;
         admin = new JFrame("ADMIN : "+title);
     }
     void create(GridBagConstraints gbc) {
-        gbc.gridy=0;  gbc.gridx=0;
-        gbc.weighty=10;
-        JLabel l = new JLabel("Select");
+        gbc.gridy=1;  gbc.gridx=0;
+        JLabel l = new JLabel("Select::");
         l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
@@ -50,9 +52,11 @@ public class AdminGUI implements ActionListener {
         try {
             sql = "select * from Professor";
             ResultSet rs = stmt.executeQuery(sql);
-            gbc.gridy=1;
+            gbc.gridy=2;
             gbc.weighty=0;
             while(rs.next()) {
+                if(rs.getString("user").equals("Dean"))
+                    continue;
                 gbc.gridx=count;               
                 rb = new JRadioButton(rs.getString("user"));
                 rb.setMnemonic(KeyEvent.VK_B);
@@ -72,16 +76,26 @@ public class AdminGUI implements ActionListener {
         rb.addActionListener(this);
         bg.add(rb);
         pane.add(rb,gbc);
-        gbc.gridy=2;  gbc.gridx=1;
+        gbc.gridy=0;  gbc.gridx=count;
+        JButton addp = new JButton("Logout");
+        addp.addActionListener(this);
+        addp.setActionCommand("Logout");
+        pane.add(addp,gbc);
+        gbc.gridy=3;  gbc.gridx=0;
+        l = new JLabel("Add::");
+        l.setBackground(new Color(211,211,211));
+        l.setOpaque(true);
+        l.setForeground(Color.BLACK);
+        pane.add(l,gbc);
+        gbc.gridy=4;  gbc.gridx=0;
         gbc.gridwidth=2;
-        gbc.weighty=40;
         JButton adds = new JButton("Add Student");
         adds.addActionListener(this);
         adds.setActionCommand("Add Student");
         pane.add(adds,gbc);
-        gbc.gridy=2;  gbc.gridx=4;
+        gbc.gridy=4;  gbc.gridx=2;      
         gbc.gridwidth=2;
-        JButton addp = new JButton("Add Prof.");
+        addp = new JButton("Add Prof.");
         addp.addActionListener(this);
         addp.setActionCommand("Add Prof.");
         pane.add(addp,gbc);
@@ -163,42 +177,69 @@ public class AdminGUI implements ActionListener {
         datapane.add(b,gbc);
     }
     void create3(GridBagConstraints gbc) {
-        gbc.gridx=0;
+        gbc.gridx=1;
         gbc.gridy=0;
-        JLabel ulabel = new JLabel("Set Username",SwingConstants.CENTER);
+        JLabel ulabel = new JLabel("ProfId",SwingConstants.CENTER);
+        ulabel.setMinimumSize(new Dimension(100,15));
         ulabel.setBackground(Color.WHITE);
         ulabel.setOpaque(true);
         ulabel.setForeground(Color.BLACK);
         datapane.add(ulabel,gbc);
-        gbc.gridx=1;
+        gbc.gridx=3;
         gbc.gridy=0;
         utext = new JTextField("",SwingConstants.CENTER);
+        utext.setMinimumSize(new Dimension(100,15));
         utext.setBackground(Color.WHITE);
         utext.setOpaque(true);
         utext.setForeground(Color.BLACK);
         datapane.add(utext,gbc);
-        gbc.gridx=0;
+        gbc.gridx=1;
         gbc.gridy=1;
-        JLabel plabel = new JLabel("Set Password",SwingConstants.CENTER);
+        JLabel plabel = new JLabel("Password",SwingConstants.CENTER);
+        plabel.setMinimumSize(new Dimension(100,15));
         plabel.setBackground(Color.WHITE);
         plabel.setOpaque(true);
         plabel.setForeground(Color.BLACK);
         datapane.add(plabel,gbc);
-        gbc.gridx=1;
+        gbc.gridx=3;
         gbc.gridy=1;
         ptext = new JPasswordField("",SwingConstants.CENTER);
+        ptext.setMinimumSize(new Dimension(100,15));
         ptext.setBackground(Color.WHITE);
         ptext.setOpaque(true);
         ptext.setForeground(Color.BLACK);
         datapane.add(ptext,gbc);
-        gbc.gridx=1;
+        gbc.gridx=0;
         gbc.gridy=2;
+        JCheckBox c;
+        c = new JCheckBox("SOE", false);
+        cbg.add(c);
+        datapane.add(c,gbc);
+        gbc.gridx=1;
+        c = new JCheckBox("AI", false);
+        cbg.add(c);
+        datapane.add(c,gbc); 
+        gbc.gridx=2;
+        c = new JCheckBox("CNE", false);
+        cbg.add(c);
+        datapane.add(c,gbc); 
+        gbc.gridx=3;
+        c = new JCheckBox("GVC", false);
+        cbg.add(c);
+        datapane.add(c,gbc); 
+        gbc.gridx=4;
+        c = new JCheckBox("POE", false);
+        cbg.add(c);     
+        datapane.add(c,gbc); 
+        gbc.gridy=3;
+        gbc.gridx=2;
         JButton b = new JButton("Add");
         b.setMaximumSize(new Dimension(100,30));
         b.setActionCommand("Add");
         b.addActionListener(this);
         datapane.add(b,gbc);
     }
+
     void populate2GUI() {
         datapane.setLayout(new GridBagLayout());
         datapane.setBackground(new Color(135,206,250));
@@ -217,6 +258,7 @@ public class AdminGUI implements ActionListener {
         pane.setLayout(new GridBagLayout());
         pane.setBackground(new Color(135,206,250));
         GridBagConstraints gbc = new GridBagConstraints();   
+        gbc.insets = new Insets(20,4,4,4);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         create(gbc);
     }
@@ -245,6 +287,12 @@ public class AdminGUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if("Logout".equals(e.getActionCommand())) {
+            admin.setVisible(false);
+            MainGui mgui = new MainGui("Institute Log In",stmt);
+            mgui.createAndShowGUI();
+            return;
+        }
         if("All".equals(e.getActionCommand())) {
             ProfessorGUI pgui = new ProfessorGUI("DEAN",stmt,"Dean");
             pgui.createAndShowGUI();
@@ -279,14 +327,25 @@ public class AdminGUI implements ActionListener {
                             stmt.executeUpdate(sql);
                         }
                     }
-                    JOptionPane.showMessageDialog(admin, "Updated Successfully");
+                    JOptionPane.showMessageDialog(admin, "Student added Successfully");
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
+                }               
             }
             else {
-                
+                try {
+                    sql = "Insert into Professor Values ('"+utext.getText()+"','"+ptext.getText()+"')";
+                    stmt.executeUpdate(sql);
+                    for (JCheckBox cb : cbg) {
+                        if(cb.isSelected()) {
+                            sql = "Insert into Profdata Values ('"+utext.getText()+"','"+cb.getText()+"');";                 
+                            stmt.executeUpdate(sql);
+                        }
+                    }                    
+                    JOptionPane.showMessageDialog(admin, "Professor added Successfully");
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }         
             }
             return;
         }
@@ -295,6 +354,6 @@ public class AdminGUI implements ActionListener {
             return;
         }
         ProfessorGUI pgui = new ProfessorGUI(e.getActionCommand().toUpperCase(),stmt,e.getActionCommand());
-            pgui.createAndShowGUI();
+        pgui.createAndShowGUI();
     }
 }

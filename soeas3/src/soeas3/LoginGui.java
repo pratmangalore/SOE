@@ -117,6 +117,8 @@ public class LoginGui implements ActionListener{
                         break; 
                     }
                     else {
+                        utext.setText("");
+                        ptext.setText("");
                         JOptionPane.showMessageDialog(login, "Invalid Username or Password");
                     }
                 } catch (SQLException ex) {

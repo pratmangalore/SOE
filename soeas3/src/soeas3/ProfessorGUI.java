@@ -41,13 +41,13 @@ public class ProfessorGUI implements ActionListener{
     }
     void subjects(GridBagConstraints gbc) {
         count=0;
-        gbc.gridy=0;  gbc.gridx=0;
+        gbc.gridy=1;  gbc.gridx=0;
         JLabel l = new JLabel("Select Course");
         l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         pane.add(l,gbc);
-        gbc.gridy=1;
+        gbc.gridy=2;
         String[] subjects = {"SOE","AI","GVC","CNE","POE"};
         ButtonGroup bg = new ButtonGroup();
         while(count<5) {
@@ -61,21 +61,26 @@ public class ProfessorGUI implements ActionListener{
             pane.add(rb,gbc);  
             count++;
         }
+        gbc.gridy=0;  gbc.gridx=count;
+        JButton addp = new JButton("Logout");
+        addp.addActionListener(this);
+        addp.setActionCommand("Logout");
+        pane.add(addp,gbc);
     }
     void classes(GridBagConstraints gbc) {
-        gbc.gridy=2;    gbc.gridx=0;
+        gbc.gridy=3;    gbc.gridx=0;
         JPanel gap = new JPanel();
         gap.setBackground(new Color(135,206,250));
         gap.setSize(400, 150);
         pane.add(gap,gbc);
-        gbc.gridy=3;    gbc.gridx=0;
+        gbc.gridy=4;    gbc.gridx=0;
         JLabel l = new JLabel("Select Class");
         l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         pane.add(l,gbc);
         String section[] = {"SECTION A","SECTION B","SECTION C"};  
-        gbc.gridy=4;
+        gbc.gridy=5;
         ButtonGroup bg = new ButtonGroup();
         for(int i=0;i<3;i++) {
             gbc.gridx=i;
@@ -187,6 +192,12 @@ public class ProfessorGUI implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        if("Logout".equals(e.getActionCommand())) {
+            professor.setVisible(false);
+            LoginGui mgui = new LoginGui("Institute Log In",stmt);
+            mgui.createAndShowGUI();
+            return;
+        }
         switch (e.getActionCommand()) {
             case "SECTION A":
             case "SECTION B":

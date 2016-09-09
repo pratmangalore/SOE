@@ -11,13 +11,17 @@ public class Soeas1 {
     HashMap<String,Integer> ini = new HashMap<String,Integer>();
     HashMap<String,Integer> loops = new HashMap<String,Integer>();
     HashMap<String,Integer> conds = new HashMap<String,Integer>();
+    
+    PrintStream out;
+    String datatype[] = {"int","float","char","double","void"};
+    
     public Soeas1() throws FileNotFoundException
     {
         ini.put("int",0);   ini.put("float",0);   ini.put("double",0);    ini.put("char",0);
         nonini.put("int",0);  nonini.put("float",0);   nonini.put("double",0);   nonini.put("char",0);
         funs.put("int",0);   funs.put("void",0);   funs.put("char",0);  funs.put("float",0);  funs.put("double",0);
-        loops.put("for",0);   loops.put("while",0);   loops.put("do",0);    conds.put("if",0);
-        PrintStream out = new PrintStream(new FileOutputStream("iit2014112.txt"));
+        loops.put("for",0);   loops.put("while",0);    conds.put("if",0);
+        out = new PrintStream(new FileOutputStream("iit2014112.txt"));
         System.setOut(out);
     }
     public void findVar(String line,String pat,String type) {
@@ -108,7 +112,6 @@ public class Soeas1 {
             lin = m.group(0).split("[\\s*,\\(\\)]");
             for(String word:lin)
             {
-                //System.out.println(word);
                 if(word.compareTo("if")==0)
                 {
                     count = conds.get(word);
@@ -117,7 +120,6 @@ public class Soeas1 {
                     break;
                 }          
             }    
-            //System.out.println("");
         }
     }
     
@@ -128,21 +130,16 @@ public class Soeas1 {
     }
     
     public void parsThis(String line) {
-        String variable="\\s+\\w*\\s*";
-        String intPat = "(\\.*(\\()?\\s*int\\s+\\w*\\s*(\\s*=\\s*\\d*)?(;)?\\s*(?:\\s*[,)]\\s*([;]|(int)?\\s*\\w*(\\))?(\\s*=\\s*\\d*)?)*)*)";
-        String charPat = "(\\.*(\\()?\\s*char\\s+\\w*\\s*(\\s*=\\s*\\'\\w*\\')?(;)?\\s*(?:\\s*[,)]\\s*([;]|(char)?\\s*\\w*(\\))?(\\s*=\\s*\\'\\w*\\')?)*)*)";
-        String douPat = "(\\.*(\\()?\\s*double\\s+\\w*\\s*(\\s*=\\s*\\d*)?(;)?\\s*(?:\\s*[,)]\\s*([;]|(double)?\\s*\\w*(\\))?(\\s*=\\s*\\d*)?)*)*)";
-        String floatPat = "(\\.*(\\()?\\s*float\\s+\\w*\\s*(\\s*=\\s*\\d*)?(;)?\\s*(?:\\s*[,)]\\s*([;]|(float)?\\s*\\w*(\\))?(\\s*=\\s*\\d*)?)*)*)";
-        String funcPat = "(\\.*(int|char|double|float|void)\\s+\\w*\\s*\\((?:\\s*(,)?(int|char|double|float)\\s+\\w*\\s*)*\\))";
-        String loopPat = "(\\.*(for|while)\\s*[(].*[)])|(\\.*do\\s*[{]\\.*)";
-        String condPat = "(\\.*if\\s*[(].*[)])";
-        findVar(line,intPat,"int");
-        findVar(line,charPat,"char");
-        findVar(line,douPat,"double");
-        findVar(line,floatPat,"float");
-        findFun(line,funcPat);
-        findLoop(line,loopPat);
-        findCond(line,condPat);
+        String variable = "((\\w)+(\\s)*(=(\\s)*(.)*)?)";
+        for(int i=0;i<4;i++) {
+            findVar(line,"((\\s)*"+datatype[i]+"(\\s)+"+variable+"(\\s)*((,(\\s)*"+variable+"(\\s)*)*)?;)",datatype[i]);
+        }
+        String arguments = "(int|float|char|double)(\\s)+"+variable;
+        for(int i=0;i<5;i++) {
+            findFun(line,"((\\s)*"+datatype[i]+"(\\s)+(\\w)+(\\s)*[(](("+arguments+")(,("+arguments+"))*)?[)])");
+        }
+        findCond(line,"((\\s)*(if(\\s)*[(](.)*[)]))");
+        findLoop(line,"(\\.*(for|while)\\s*[(].*[)])");
     }
     
     public void parser(File f) {
@@ -150,7 +147,6 @@ public class Soeas1 {
             Scanner sc = new Scanner(f);
             while(sc.hasNextLine())  {
                 String l = sc.nextLine();
-                //System.out.println(l);
                 parsThis(l);
             }
             System.out.println("Functions");                    printMap(funs);         System.out.println("");
@@ -165,8 +161,7 @@ public class Soeas1 {
     }
     
     public static void main(String[] args) throws IOException {
-          File f = new File("/home/placements2017/soeas1/csnip.c");
-          Soeas1 obj = new Soeas1();
-          obj.parser(f);
+          File f = new File("/home/placements2017/NetBeansProjects/soeas1/file.c");
+          new Soeas1().parser(f);
     }
 }

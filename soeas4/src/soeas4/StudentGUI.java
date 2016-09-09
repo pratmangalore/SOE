@@ -52,6 +52,13 @@ public class StudentGUI implements ActionListener{
                 pane.add(subject,gbc);
                 count++;
             }
+            gbc.gridy=0;
+            gbc.gridx=count;
+            JButton addp = new JButton("Logout");
+            addp.addActionListener(this);
+            addp.setActionCommand("Logout");
+            pane.add(addp,gbc);
+            
         } catch (SQLException ex) {
             Logger.getLogger(StudentGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,6 +148,12 @@ public class StudentGUI implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if("Logout".equals(e.getActionCommand())) {
+            student.setVisible(false);
+            MainGui mgui = new MainGui("Institute Log In",stmt);
+            mgui.createAndShowGUI();
+            return;
+        }
         student.setVisible(false);
         MainGui login = new MainGui("Institute Log In",stmt);
         login.createAndShowGUI();

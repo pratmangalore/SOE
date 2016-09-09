@@ -43,14 +43,19 @@ public class ProfessorGUI implements ActionListener{
         sql = "Select * from Profdata where user = '"+user+"';";
         count=0;
         try {
-            gbc.gridy=0;  gbc.gridx=0;
-            JLabel l = new JLabel("Select Course");
+            gbc.gridy=0;  gbc.gridx=3;
+            JButton addp = new JButton("Logout");
+            addp.addActionListener(this);
+            addp.setActionCommand("Logout");
+            pane.add(addp,gbc);
+            gbc.gridy=1;  gbc.gridx=0;
+            JLabel l = new JLabel("Select:");
             l.setBackground(new Color(211,211,211));
             l.setOpaque(true);
             l.setForeground(Color.BLACK);
             pane.add(l,gbc);
             ResultSet rs = stmt.executeQuery(sql);
-            gbc.gridy=1;
+            gbc.gridy=2;
             ButtonGroup bg = new ButtonGroup();
             while(rs.next()) {
                 gbc.gridx=count;               
@@ -67,19 +72,19 @@ public class ProfessorGUI implements ActionListener{
         }
     }
     void classes(GridBagConstraints gbc) {
-        gbc.gridy=2;    gbc.gridx=0;
+        gbc.gridy=3;    gbc.gridx=0;
         JPanel gap = new JPanel();
         gap.setBackground(new Color(135,206,250));
         gap.setSize(400, 150);
         pane.add(gap,gbc);
-        gbc.gridy=3;    gbc.gridx=0;
-        JLabel l = new JLabel("Select Class");
+        gbc.gridy=4;    gbc.gridx=0;
+        JLabel l = new JLabel("Select:");
         l.setBackground(new Color(211,211,211));
         l.setOpaque(true);
         l.setForeground(Color.BLACK);
         pane.add(l,gbc);
         String section[] = {"SECTION A","SECTION B","SECTION C"};  
-        gbc.gridy=4;
+        gbc.gridy=5;
         ButtonGroup bg = new ButtonGroup();
         for(int i=0;i<3;i++) {
             gbc.gridx=i;
@@ -177,7 +182,7 @@ public class ProfessorGUI implements ActionListener{
         pane = new JPanel();
         populateGUI();
         professor.add(pane);
-        professor.setBounds(400,100,400,250);
+        professor.setBounds(450,100,500,250);
         professor.setVisible(true);
     }
     
@@ -186,12 +191,18 @@ public class ProfessorGUI implements ActionListener{
         datapane = new JPanel();
         populateGUI2();
         alldata.add(datapane);
-        alldata.setBounds(400,100,400,250);
+        alldata.setBounds(485,100,400,250);
         alldata.setVisible(true);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        if("Logout".equals(e.getActionCommand())) {
+            professor.setVisible(false);
+            MainGui mgui = new MainGui("Institute Log In",stmt);
+            mgui.createAndShowGUI();
+            return;
+        }
         switch (e.getActionCommand()) {
             case "SECTION A":
             case "SECTION B":

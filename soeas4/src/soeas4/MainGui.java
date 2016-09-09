@@ -19,7 +19,7 @@ public class MainGui implements ActionListener{
     public JTextField utext;
     public JPasswordField ptext;
     public String sql;
-    int mode = 1;
+    int mode = 0;
     MainGui(String title,Statement stmt) {
         this.stmt = stmt;
         this.title = title;
@@ -112,7 +112,7 @@ public class MainGui implements ActionListener{
         pane = new JPanel();
         populateGUI();
         login.add(pane);
-        login.setBounds(400,100,400,100);
+        login.setBounds(400,100,500,200);
         //login.pack();
         login.setVisible(true);
     }
@@ -131,6 +131,12 @@ public class MainGui implements ActionListener{
             case "LogIn":
                 String user = utext.getText();
                 String pass = ptext.getText();
+                if(mode==0) {
+                    JOptionPane.showMessageDialog(login, "Invalid Username or Password");
+                    utext.setText("");
+                    ptext.setText("");
+                    return;
+                }                   
                 String sql2=sql+"user = '"+user+"' AND pass = '"+pass+"';";
                 try {
                     if(checkLog(sql2)) {
@@ -154,6 +160,8 @@ public class MainGui implements ActionListener{
                     }
                     else {
                         JOptionPane.showMessageDialog(login, "Invalid Username or Password");
+                        utext.setText("");
+                        ptext.setText("");
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, null, ex);
@@ -170,6 +178,9 @@ public class MainGui implements ActionListener{
             case "Student":
                 sql = "Select * from Student where ";
                 mode = 1;
+                return;
+            default :
+                mode =0;
                 return;
         }
     }
