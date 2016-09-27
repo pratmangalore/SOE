@@ -8,15 +8,18 @@ int main()
 	a = 10;
 	b = 20;
 	c = 30;
+	while(b) {
+		b--;
+	}
 	fun1(a, b, c);
 	fun2(a, b, c);
 	return 0;
 }
 void fun1(int a, int b, int c)
 {
-	if(a > b)
+	if(a)
 	{
-		if(a > c)
+		if(a > b && c > h)
 		{
 			printf("%d", a);
 		}

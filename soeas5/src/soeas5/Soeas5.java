@@ -38,14 +38,29 @@ public class Soeas5 {
     int getDecPoints(Scanner sc) {
         int ndp = 0;
         int count = 0;
-        String condition = "(<|>|<=|>=|==|!=|(\\&\\&)|(\\|\\|))";
+        int logs = 0;
+        String condition = "(<|>|<=|>=|==|!=)";
+        String condition2 = "(\\s)*if[(](.*)?[)]|((\\s)*while[(].*?[)])";
+        Pattern p2 = Pattern.compile(condition2);
         Pattern p = Pattern.compile(condition);
-        Matcher m;
+        Matcher m,m2;
         while(true) {
+            int test = 0;
             String l = sc.nextLine();
             m = p.matcher(l);
-            while(m.find())
+            m2 = p2.matcher(l);
+            while(m.find()) {
+                if(m.group().contains("&&") || m.group().contains("||"))
+                    logs++;
                 ndp++;
+                test = 1;
+            } 
+            if(test == 0) {
+                while(m2.find()) {
+                    ndp++;
+                }   
+            }
+            ndp+=logs;
             if(l.contains("{"))
                 count++;
             if(l.contains("}"))
